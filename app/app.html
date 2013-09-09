@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+  <style type="text/css">
+    html { height: 100%; }
+    body { height: 100%; margin: 0; padding: 0; }
+    #map-canvas { height: 100%;  };
+  </style>
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA5kXsecPZL9UEHQjL1gjwth-dGbrcXf2A&sensor=false"></script>
+  <script type="text/javascript" src="path.js"></script>
+  <script type="text/javascript">
+    function initialize() {
+      var mapOptions = {
+        center: new google.maps.LatLng(37.301589, -121.926015),
+        zoom: 15,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
+      var map = new google.maps.Map(document.getElementById("map-canvas"),
+        mapOptions);
+
+      /* var dirRequest = {
+        origin: new google.maps.LatLng(37.3007950, -121.9255450),
+        destination: new google.maps.LatLng(37.3008950, -121.9255350),
+        travelMode: google.maps.TravelMode.BICYCLING
+      };
+      var dirServices = new google.maps.DirectionsService();
+      dirServices.route(
+        dirRequest,
+        function (result, status) {
+          if (status == google.maps.DirectionsStatus.OK) {
+            var renderer = new google.maps.DirectionsRenderer();
+            renderer.setMap(map);
+            renderer.setDirections(result);
+          }
+        }
+      ); */
+
+      /* var path = [
+        new google.maps.LatLng(37.3007950, -121.9255450),
+        new google.maps.LatLng(37.3008950, -121.9255350)
+      ]; */
+      var poly = new google.maps.Polyline({
+        path: path,
+        strokeColor: '#FF0000',
+        strokeOpacity: 0.7,
+        strokeWeight: 2
+      });
+      poly.setMap(map);
+    }
+    google.maps.event.addDomListener(window, 'load', initialize);
+  </script>
+  <style type="text/css">
+    .button {
+      margin: 0; padding: 0;
+      width: 200px; height: 80px;
+      background-color: #ff0000;
+      position: absolute;
+      z-index: 1;
+      font-family: Verdana;
+      color: #ffffff;
+      display: table-cell;
+      text-align: center;
+    }
+    .button:active {
+      background-color: #fff000;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="button" style="top:10%; left:80%;">LOAD</div>
+  <div id="map-canvas"></div>
+</body>
+
+</html>
