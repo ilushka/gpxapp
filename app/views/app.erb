@@ -59,7 +59,11 @@
         var xhr = new XMLHttpRequest();
         xhr.open('POST', '/');
         xhr.onreadystatechange = function() {
-          alert('MONKEY');
+          if (this.readyState == this.DONE) {
+            if (this.status == 200) {
+              console.log($.parseJSON(this.responseText)[0].latitude);
+            }
+          }
         };
         xhr.send(formData);
       });
