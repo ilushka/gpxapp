@@ -6,6 +6,7 @@ get '/' do
 end
 
 post '/' do
+  p params['gpxfile'][:filename]
   f = File.open(params['gpxfile'][:tempfile])
   doc = Nokogiri::XML(f)
   f.close

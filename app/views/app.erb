@@ -53,11 +53,15 @@
       poly.setMap(map);
 
       $('#gpxfile').change(function() {
-        $('#gpxsend').trigger('click');
-      });
-
-      $('#gpxsend').click(function() {
-        return true;
+        var file = this.files[0];
+        var formData = new FormData();
+        formData.append('gpxfile', file);
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/');
+        xhr.onreadystatechange = function() {
+          alert('MONKEY');
+        };
+        xhr.send(formData);
       });
     }
     google.maps.event.addDomListener(window, 'load', initialize);
