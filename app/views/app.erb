@@ -13,8 +13,9 @@
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA5kXsecPZL9UEHQjL1gjwth-dGbrcXf2A&sensor=false"></script>
   <!-- script type="text/javascript" src="path.js"></script -->
   <script type="text/javascript">
-    var colors = ['#67CC8A', '#08993B', '#B5FF9A', '#F7DAFF', '#9B67CC', '#CC3F36', '#CC8B19'];
+    var colors = ['#000000', '#FFFFFF', '#FF0000', '#FFFF00', '#0000FF', '#FF00FF', '#00FFFF'];
     var isMapEmpty = true;
+    var mapBounds = new google.maps.LatLngBounds();
 
     function initialize() {
       var mapOptions = {
@@ -56,15 +57,12 @@
               if (isMapEmpty == true) {
                 map.fitBounds(getPathBounds(path));
               } else {
-                var center = map.getCenter();
-                var zoom = map.getZoom();
-                var bounds = map.getBounds();
-                bounds.union(getPathBounds(path));
-                google.maps.event.addListener(map, 'bounds_changed', function(event) {
+                mapBounds.union(getPathBounds(path));
+                /* google.maps.event.addListener(map, 'bounds_changed', function(event) {
                   map.setCenter(center);
                   map.setZoom(zoom);
-                });
-                map.fitBounds(bounds);
+                }); */
+                map.fitBounds(mapBounds);
               }            
               drawPolyline(map, path);
             }
@@ -98,8 +96,7 @@
     }
 
     function drawPolyline(map, path) {
-      var color = colors.shift();
-      colors.push(color);
+      var color = getNextColor();
       var poly = new google.maps.Polyline({
         path: path,
         strokeColor: color,
@@ -118,6 +115,12 @@
         });
       });
       isMapEmpty = false;
+    }
+
+    function getNextColor() {
+      var color = colors.shift();
+      colors.push(color);
+      return color;
     }
   </script>
 </head>
