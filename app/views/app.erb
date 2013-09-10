@@ -13,6 +13,8 @@
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA5kXsecPZL9UEHQjL1gjwth-dGbrcXf2A&sensor=false"></script>
   <!-- script type="text/javascript" src="path.js"></script -->
   <script type="text/javascript">
+    var colors = ['#67CC8A', '#08993B', '#B5FF9A', '#F7DAFF', '#9B67CC', '#CC3F36', '#CC8B19'];
+
     function initialize() {
       var mapOptions = {
         center: new google.maps.LatLng(37.301589, -121.926015),
@@ -62,13 +64,25 @@
           if (this.readyState == this.DONE) {
             if (this.status == 200) {
               var path = getGoogleMapsPath(this.responseText)
+              var color = colors.shift();
+              colors.push(color);
               var poly = new google.maps.Polyline({
                 path: path,
-                strokeColor: '#FF0000',
-                strokeOpacity: 1.0,
-                strokeWeight: 3
+                strokeColor: color,
+                strokeOpacity: 0.7,
+                strokeWeight: 5
               });
               poly.setMap(map);
+              google.maps.event.addListener(poly, 'mouseover', function() {
+                this.setOptions({
+                  strokeColor: '#0000FF'
+                });
+              });
+              google.maps.event.addListener(poly, 'mouseout', function() {
+                this.setOptions({
+                  strokeColor: color
+                });
+              });
             }
           }
         };
