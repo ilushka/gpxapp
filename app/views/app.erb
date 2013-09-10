@@ -11,7 +11,7 @@
   </style>
   <script src="http://code.jquery.com/jquery.js"></script>
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA5kXsecPZL9UEHQjL1gjwth-dGbrcXf2A&sensor=false"></script>
-  <script type="text/javascript" src="path.js"></script>
+  <!-- script type="text/javascript" src="path.js"></script -->
   <script type="text/javascript">
     function initialize() {
       var mapOptions = {
@@ -44,13 +44,13 @@
         new google.maps.LatLng(37.3008950, -121.9255350)
       ]; */
 
-      var poly = new google.maps.Polyline({
+      /* var poly = new google.maps.Polyline({
         path: path,
         strokeColor: '#FF0000',
         strokeOpacity: 0.7,
         strokeWeight: 2
       });
-      poly.setMap(map);
+      poly.setMap(map); */
 
       $('#gpxfile').change(function() {
         var file = this.files[0];
@@ -61,7 +61,14 @@
         xhr.onreadystatechange = function() {
           if (this.readyState == this.DONE) {
             if (this.status == 200) {
-              console.log($.parseJSON(this.responseText)[0].latitude);
+              var path = getGoogleMapsPath(this.responseText)
+              var poly = new google.maps.Polyline({
+                path: path,
+                strokeColor: '#FF0000',
+                strokeOpacity: 1.0,
+                strokeWeight: 3
+              });
+              poly.setMap(map);
             }
           }
         };
@@ -72,6 +79,16 @@
 
     function loadFile() {
       $('#gpxfile').trigger('click');
+    }
+
+    function getGoogleMapsPath(responseJSON) {
+      var arrayLatLng = [];
+      var arrayJSON = $.parseJSON(responseJSON); 
+      for (var ii = 0; ii < arrayJSON.length; ii++) {
+        var coor = arrayJSON[ii];
+        arrayLatLng.push(new google.maps.LatLng(coor.latitude, coor.longitude));
+      }
+      return arrayLatLng;
     }
   </script>
 </head>
@@ -84,8 +101,7 @@
         <span class="caret"></span>
       </a>
       <ul class="dropdown-menu">
-        <li><a href="javascript:loadFile()">google</a></li>
-        <li><a href="http://www.yahoo.com/">yahoo</a></li>
+        <li><a href="javascript:loadFile()">Load GPX</a></li>
       </ul>
     </div>
   </div>
