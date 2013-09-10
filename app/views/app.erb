@@ -55,16 +55,8 @@
           if (this.readyState == this.DONE) {
             if (this.status == 200) {
               var path = getGoogleMapsPath(this.responseText)
-              if (isMapEmpty == true) {
-                map.fitBounds(getPathBounds(path));
-              } else {
-                mapBounds.union(getPathBounds(path));
-                /* google.maps.event.addListener(map, 'bounds_changed', function(event) {
-                  map.setCenter(center);
-                  map.setZoom(zoom);
-                }); */
-                map.fitBounds(mapBounds);
-              }            
+              mapBounds.union(getPathBounds(path));
+              map.fitBounds(mapBounds);
               drawPolyline(map, path);
             }
           }
@@ -101,27 +93,30 @@
       var poly = new google.maps.Polyline({
         path: path,
         strokeColor: color,
-        strokeOpacity: 0.7,
+        strokeOpacity: 0.3,
         strokeWeight: 5
       });
       poly.setMap(map);
       google.maps.event.addListener(poly, 'mouseover', function() {
         this.setOptions({
-          strokeColor: '#0000FF'
+          strokeColor: '#0000FF',
+          strokeOpacity: 1.0
         });
       });
       google.maps.event.addListener(poly, 'mouseout', function() {
         this.setOptions({
-          strokeColor: color
+          strokeColor: color,
+          strokeOpacity: 0.3
         });
       });
       isMapEmpty = false;
     }
 
     function getNextColor() {
-      var color = colors.shift();
+      /* var color = colors.shift();
       colors.push(color);
-      return color;
+      return color; */
+      return '#000000';
     }
   </script>
 </head>
